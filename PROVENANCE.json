@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/Gissio/mcu-max",
+  "revision": "aa03caffce50729566b5db6965bf735c31f33eea",
+  "version": "1.0.6",
+  "license": "MIT",
+  "files": {
+    "mcu-max.c": "166033b960a64ef868878d96943dfe57fddfac22",
+    "mcu-max.h": "dd7aecc46cb7a228fc312380b47daa33c2768418",
+    "README.md": "7429332c25fdd3e1939ff9a8ecd93d5a7ea775a3",
+    "../LICENSE": "af5af4c60e17b42eb587a0b384ef2e2b3de106c2"
+  }
+}

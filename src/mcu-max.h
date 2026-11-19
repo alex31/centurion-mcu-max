@@ -17,7 +17,27 @@
 extern "C" {
 #endif
 
+#ifdef __cpu6__
+typedef unsigned char bool;
+#define true 1
+#define false 0
+/* EE200 object symbols have 16 significant characters. */
+#define mcumax_init mc6_init
+#define mcumax_set_fen_position mc6_fen
+#define mcumax_get_piece mc6_piece
+#define mcumax_get_current_side mc6_side
+#define mcumax_search_valid_moves mc6_moves
+#define mcumax_search_best_move mc6_best
+#define mcumax_play_move mc6_play
+#define mcumax_set_callback mc6_callback
+#define mcumax_stop_search mc6_stop
+#define mcumax_get_nodes mc6_nodes
+#define mcumax_in_check mc6_check
+#define mcumax_rights mc6_rights
+#define mcumax_ep mc6_ep
+#else
 #include <stdbool.h>
+#endif
 #include <stdint.h>
 
 #define MCUMAX_ID "mcu-max 1.0.6"
@@ -99,17 +119,19 @@ uint32_t mcumax_search_valid_moves(mcumax_move *buffer, uint32_t buffer_size);
  * @param node_max The maximum number of nodes to search.
  * @param depth_max The maximum depth to search.
  *
- * @return The best move (MCUMAX_SQUARE_INVALID, MCUMAX_SQUARE_INVALID if none found).
+ * @param result Output move; both squares are MCUMAX_SQUARE_INVALID if none found.
  */
-mcumax_move mcumax_search_best_move(uint32_t node_max, uint32_t depth_max);
+void mcumax_search_best_move(uint32_t node_max, uint32_t depth_max, mcumax_move *result);
 
 /**
  * @brief Plays a move.
  *
- * @param move The move.
+ * @param from Origin square.
+ * @param to Destination square.
  * @return The move was played.
  */
-bool mcumax_play_move(mcumax_move move);
+bool mcumax_play_move(mcumax_square from, mcumax_square to);
+uint32_t mcumax_get_nodes(void);
 
 /**
  * @brief Sets the user callback, which is called periodically during search.
@@ -120,6 +142,13 @@ void mcumax_set_callback(mcumax_callback callback, void *userdata);
  * @brief Stops the current search. To be called from the user callback.
  */
 void mcumax_stop_search(void);
+
+#ifdef MCUMAX_GAME
+/* Game-only inspection; excluded from the fixed historical benchmark. */
+uint8_t mcumax_in_check(void);
+uint8_t mcumax_rights(void);
+uint8_t mcumax_ep(void);
+#endif
 
 #ifdef __cplusplus
 }
